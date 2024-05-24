@@ -4,8 +4,10 @@ import ClientCards from "@/components/ClientCard";
 import Container from "@/components/Container";
 import RefreshClients from "@/components/RefreshClients";
 import { clientStore } from "@/store/store";
+import { revalidatePath } from "next/cache";
 
 const Home = async () => {
+  revalidatePath("/");
   clientStore.getState().resetClients();
   await findAll();
   const emTeste = clientStore.getState().emTeste;

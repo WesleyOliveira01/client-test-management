@@ -31,6 +31,44 @@ export async function formataData(data: string) {
   return [dia, mes, ano].join("/");
 }
 
+function setClientsByStatus(item: Projeto.Client) {
+  if (item.status == "EM_TESTE") clientStore.getState().addClientEmTeste(item);
+  if (item.status == "TESTE_FINALIZADO")
+    clientStore.getState().addClientTesteFinalizado(item);
+  if (item.status == "TESTE_EXPIRADO")
+    clientStore.getState().addClientTesteExpirado(item);
+  if (item.status == "CONTRATO_ASSINADO")
+    clientStore.getState().addClientContratoAssinado(item);
+}
+
+async function updateClientInFirstRender(client: Projeto.Client) {
+  const prazoFinal = new Date(client.prazoFinal);
+  const dataAtual = new Date().getUTCDate();
+  const dataFinal = prazoFinal.getUTCDate();
+  if (dataFinal > dataAtual) {
+    if (client.status == "CONTRATO_ASSINADO") {
+      await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
+      return;
+    }
+    await updateStatus({ id: client.id, status: "EM_TESTE" });
+  }
+  if (dataFinal == dataAtual) {
+    if (client.status == "CONTRATO_ASSINADO") {
+      await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
+      return;
+    }
+    await updateStatus({ id: client.id, status: "TESTE_FINALIZADO" });
+  }
+  if (dataFinal < dataAtual) {
+    if (client.status == "CONTRATO_ASSINADO") {
+      await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
+      return;
+    }
+    await updateStatus({ id: client.id, status: "TESTE_EXPIRADO" });
+  }
+  setClientsByStatus(client);
+}
+
 export async function findAll() {
   try {
     revalidatePath("/");
@@ -38,21 +76,14 @@ export async function findAll() {
     clientStore.getState().setClients(res.data);
     const clients = clientStore.getState().client;
     clients.forEach((item) => {
-      if (item.status == "EM_TESTE")
-        clientStore.getState().addClientEmTeste(item);
-      if (item.status == "TESTE_FINALIZADO")
-        clientStore.getState().addClientTesteFinalizado(item);
-      if (item.status == "TESTE_EXPIRADO")
-        clientStore.getState().addClientTesteExpirado(item);
-      if (item.status == "CONTRATO_ASSINADO")
-        clientStore.getState().addClientContratoAssinado(item);
+      updateClientInFirstRender(item);
+      setClientsByStatus(item);
+      revalidatePath("/");
     });
   } catch (error) {
     return [];
   }
 }
-
-
 
 export async function create(data: FormData) {
   const client = {
@@ -68,18 +99,7 @@ export async function create(data: FormData) {
 export async function update(data: any) {
   const res = await service.update(data);
   const client = res.data;
-  const prazoFinal = new Date(client.prazoFinal);
-  const dataAtual = new Date().getUTCDate();
-  const dataFinal = prazoFinal.getUTCDate();
-  if (dataFinal > dataAtual) {
-    await updateStatus({ id: client.id, status: "EM_TESTE" });
-  }
-  if (dataFinal == dataAtual) {
-    await updateStatus({ id: client.id, status: "TESTE_FINALIZADO" });
-  }
-  if (dataFinal < dataAtual) {
-    await updateStatus({ id: client.id, status: "TESTE_EXPIRADO" });
-  }
+  updateClientInFirstRender(client);
   if (data.contrato)
     await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
   revalidatePath("/");
