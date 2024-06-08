@@ -5,19 +5,24 @@ import RemoveClient from "./RemoveClient";
 
 const CardClient = async ({ client }: { client: Projeto.Client }) => {
   const prazo = formataData(client.prazoFinal);
-  const prazoFinal = new Date(client.prazoFinal);
-  const dataAtual = new Date().getUTCDate();
-  const dataFinal = prazoFinal.getUTCDate();
-
-  let corCard = "bg-zinc-100 text-zinc-950";
-  if (dataFinal == dataAtual) {
-    corCard = "bg-yellow-400 text-yellow-700";
+  
+  let corCard;
+  switch (client.status) {
+    case "EM_TESTE":
+      corCard = "bg-zinc-100 text-zinc-950";
+      break;
+    case "TESTE_FINALIZADO":
+      corCard = "bg-yellow-400 text-yellow-700";
+      break;
+    case "TESTE_EXPIRADO":
+      corCard = "bg-rose-400 text-red-700";
+      break;
+    case "CONTRATO_ASSINADO":
+      corCard = "bg-green-400 text-green-700";
+      break;
+    default:
+      break;
   }
-  if (dataFinal < dataAtual) {
-    corCard = "bg-rose-400 text-red-700";
-  }
-  if (client.status == "CONTRATO_ASSINADO")
-    corCard = "bg-green-400 text-green-700";
   const status = formatStatus(client.status);
   return (
     <div
