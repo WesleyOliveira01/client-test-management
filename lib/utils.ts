@@ -28,6 +28,8 @@ export function formatStatus(status: string) {
       return "Teste expirado";
     case "CONTRATO_ASSINADO":
       return "Contrato assinado";
+    case "RETIRADO":
+      return "Mesh retirado";
     default:
       break;
   }

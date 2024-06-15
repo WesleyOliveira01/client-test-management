@@ -6,7 +6,8 @@ type store = {
   testeFinalizado: Projeto.Client[];
   testeExpirado: Projeto.Client[];
   contratoAssinado: Projeto.Client[];
-  filterClients: Projeto.Client[];
+  retirados: Projeto.Client[];
+
   resetClients: () => void;
   addClient: (data: Projeto.Client) => void;
   setClients: (data: Projeto.Client[]) => void;
@@ -14,7 +15,8 @@ type store = {
   addClientTesteFinalizado: (data: Projeto.Client) => void;
   addClientTesteExpirado: (data: Projeto.Client) => void;
   addClientContratoAssinado: (data: Projeto.Client) => void;
-  setFilterClients:(data:Projeto.Client[]) => void	
+  addClientRetirado: (data: Projeto.Client) => void;
+
 };
 
 export const clientStore = create<store>((set) => ({
@@ -23,7 +25,7 @@ export const clientStore = create<store>((set) => ({
   testeFinalizado: [],
   testeExpirado: [],
   contratoAssinado: [],
-  filterClients: [],
+  retirados: [],
   resetClients: () =>
     set({
       client: [],
@@ -31,6 +33,7 @@ export const clientStore = create<store>((set) => ({
       testeFinalizado: [],
       testeExpirado: [],
       contratoAssinado: [],
+      retirados: [],
     }),
   addClient: (clients) =>
     set((state) => ({ client: [...state.client, clients] })),
@@ -46,5 +49,6 @@ export const clientStore = create<store>((set) => ({
     set((state) => ({ testeExpirado: [...state.testeExpirado, client] })),
   addClientContratoAssinado: (client) =>
     set((state) => ({ contratoAssinado: [...state.contratoAssinado, client] })),
-  setFilterClients : (data) => set({filterClients : data})
+  addClientRetirado: (client) =>
+    set((state) => ({ retirados: [...state.retirados, client] })),
 }));

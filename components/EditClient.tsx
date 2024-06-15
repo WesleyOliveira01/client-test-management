@@ -12,6 +12,7 @@ const EditClient = ({ client }: { client: Projeto.Client }) => {
       name: data.get("name"),
       prazoFinal: data.get("prazo") || client.prazoFinal,
       contrato: data.get("contrato"),
+      retirado: data.get("retirado"),
     };
     await update(_client);
   };
@@ -34,17 +35,30 @@ const EditClient = ({ client }: { client: Projeto.Client }) => {
             forElement="prazo"
             label="Prazo"
           />
-          <div className="flex gap-2">
-            <label htmlFor="contrato" className="text-sky-500 font-semibold">
-              Contrato assinado?
-            </label>
-            <input
-              type="checkbox"
-              className="checkbox-lg checkbox-info"
-              id="contrato"
-              name="contrato"
-            />
-          </div>
+          <section className="flex justify-evenly">
+              <div className="flex gap-2">
+                <label htmlFor="contrato" className="text-sky-500 font-semibold">
+                  Contrato assinado?
+                </label>
+                <input
+                  type="checkbox"
+                  className="checkbox-lg checkbox-info"
+                  id="contrato"
+                  name="contrato"
+                />
+              </div>
+              <div className="flex gap-2">
+                <label htmlFor="retirado" className="text-sky-500 font-semibold">
+                  Mesh retirado?
+                </label>
+                <input
+                  type="checkbox"
+                  className="checkbox-lg checkbox-info"
+                  id="retirado"
+                  name="retirado"
+                />
+              </div>
+          </section>
           <DialogClose
             type="submit"
             className="w-full bg-sky-400 rounded-xl font-semibold text-zinc-50 hover:bg-sky-500 hover:text-zinc-100 shadow-md p-2"
