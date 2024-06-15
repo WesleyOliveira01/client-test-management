@@ -36,6 +36,7 @@ function setClientsByStatus(item: Projeto.Client) {
     clientStore.getState().addClientTesteExpirado(item);
   if (item.status == "CONTRATO_ASSINADO")
     clientStore.getState().addClientContratoAssinado(item);
+  if (item.status == "RETIRADO") clientStore.getState().addClientRetirado(item);
 }
 
 export async function findAll() {
@@ -43,7 +44,9 @@ export async function findAll() {
     const res = await service.findAll();
     const clients = res.data;
     for (const client of clients) {
-      client.status != "CONTRATO_ASSINADO" ? client.status = await formatStatus(client.prazoFinal) : "";
+      client.status != "CONTRATO_ASSINADO" && client.status != "RETIRADO"
+        ? (client.status = await formatStatus(client.prazoFinal))
+        : "";
       setClientsByStatus(client);
     }
     clientStore.getState().setClients(clients);
@@ -66,23 +69,25 @@ export async function create(data: FormData) {
 }
 
 export async function update(data: any) {
-  const res = await service.update(data);
-  const client = res.data;
- const prazoFinal = new Date(client.prazoFinal);
- const dataAtual = new Date().getUTCDate();
- const dataFinal = prazoFinal.getUTCDate();
- if (dataFinal > dataAtual) {
-   await updateStatus({ id: client.id, status: "EM_TESTE" });
- }
- if (dataFinal == dataAtual) {
-   await updateStatus({ id: client.id, status: "TESTE_FINALIZADO" });
- }
- if (dataFinal < dataAtual) {
-   await updateStatus({ id: client.id, status: "TESTE_EXPIRADO" });
- }
-  if (data.contrato)
-    await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
-  revalidatePath("/");
+    const res = await service.update(data);
+    const client = res.data;
+    const prazoFinal = new Date(client.prazoFinal);
+    const dataAtual = new Date().getUTCDate();
+    const dataFinal = prazoFinal.getUTCDate();
+    if (dataFinal > dataAtual) {
+      await updateStatus({ id: client.id, status: "EM_TESTE" });
+    } else if (dataFinal === dataAtual) {
+      await updateStatus({ id: client.id, status: "TESTE_FINALIZADO" });
+    } else if (dataFinal < dataAtual) {
+      await updateStatus({ id: client.id, status: "TESTE_EXPIRADO" });
+    }
+    
+    if (data.contrato)
+      await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
+    if (data.retirado)
+      await updateStatus({ id: client.id, status: "RETIRADO" });
+    revalidatePath("/");
+  
 }
 
 export async function deleteById(data: any) {

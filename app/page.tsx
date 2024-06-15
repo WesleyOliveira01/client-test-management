@@ -14,6 +14,7 @@ const Home = async () => {
   const testeFinalizado = clientStore.getState().testeFinalizado;
   const testeExpirado = clientStore.getState().testeExpirado;
   const contratoAssinado = clientStore.getState().contratoAssinado;
+  const retirados = clientStore.getState().retirados;
   return (
     <Container className="flex flex-col gap-4">
       <section className=" p-2 flex items-center justify-between gap-2">
@@ -63,6 +64,18 @@ const Home = async () => {
               </h1>
               <section className="  flex flex-wrap gap-2 p-4 justify-evenly">
                 {contratoAssinado.map((item) => (
+                  <ClientCards key={item.id} client={item} />
+                ))}
+              </section>
+            </Container>
+          )}
+          {retirados.length > 0 && (
+            <Container className="border-2 border-dotted border-zinc-400 rounded-xl">
+              <h1 className="text-xl font-semibold text-blue-500">
+                Mesh retirado
+              </h1>
+              <section className="  flex flex-wrap gap-2 p-4 justify-evenly">
+                {retirados.map((item) => (
                   <ClientCards key={item.id} client={item} />
                 ))}
               </section>

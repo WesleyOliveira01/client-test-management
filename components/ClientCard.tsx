@@ -5,7 +5,6 @@ import RemoveClient from "./RemoveClient";
 
 const CardClient = async ({ client }: { client: Projeto.Client }) => {
   const prazo = formataData(client.prazoFinal);
-  
   let corCard;
   switch (client.status) {
     case "EM_TESTE":
@@ -19,6 +18,9 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
       break;
     case "CONTRATO_ASSINADO":
       corCard = "bg-green-400 text-green-700";
+      break;
+    case "RETIRADO":
+      corCard = "bg-sky-400 text-blue-600";
       break;
     default:
       break;
@@ -44,7 +46,7 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
       </section>
       <section className="flex flex-col  justify-between gap-2 p-2">
         {client.status == "CONTRATO_ASSINADO" ? (
-          ""
+          <EditClient client={client} />
         ) : (
           <>
             <EditClient client={client} />
