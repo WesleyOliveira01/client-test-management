@@ -28,7 +28,7 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
   const status = formatStatus(client.status);
   return (
     <div
-      className={`flex justify-between p-4 rounded-xl ${corCard} shadow-md w-ful lg:w-[30%]`}
+      className={`flex justify-between p-4 rounded-xl ${corCard} shadow-md w-[100%] lg:w-[30%]`}
     >
       <section className="p-4">
         <ul className="flex flex-col gap-2 font-semibold">
