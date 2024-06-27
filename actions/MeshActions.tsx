@@ -6,22 +6,31 @@ import { revalidatePath } from "next/cache";
 
 const service = new MeshService();
 
-const formatStatus = async (prazoFinal: string) => {
-  const prazo = new Date(prazoFinal).getUTCDate();
-  const dataAtual = new Date().getUTCDate();
-  if (prazo === dataAtual) {
+const formatStatus = async (prazoFinal: string, id?: number) => {
+  const prazo = {
+    date: new Date(prazoFinal).getUTCDate(),
+    month: new Date(prazoFinal).getUTCMonth() + 1,
+  };
+  const dataAtual = {
+    date: new Date().getUTCDate(),
+    month: new Date().getUTCMonth() + 1,
+  };
+  if (prazo.date === dataAtual.date && prazo.month === dataAtual.month) {
+    id && (await updateStatus({ id: id, status: "TESTE_FINALIZADO" }));
     return "TESTE_FINALIZADO";
-  }
-  if (prazo < dataAtual) {
+  } else if (prazo.date < dataAtual.date && prazo.month <= dataAtual.month) {
+    id && (await updateStatus({ id: id, status: "TESTE_EXPIRADO" }));
     return "TESTE_EXPIRADO";
+  } else {
+    id && (await updateStatus({ id: id, status: "EM_TESTE" }));
+    return "EM_TESTE";
   }
-  return "EM_TESTE";
 };
 
 export async function formataData(data: string) {
   var d = new Date(data),
     dia = "" + d.getUTCDate(),
-    mes = "" + (d.getMonth() + 1),
+    mes = "" + (d.getUTCMonth() + 1),
     ano = d.getFullYear();
   if (dia.length < 2) dia = "0" + dia;
   if (mes.length < 2) mes = "0" + mes;
@@ -44,9 +53,10 @@ export async function findAll() {
     const res = await service.findAll();
     const clients = res.data;
     for (const client of clients) {
-      client.status != "CONTRATO_ASSINADO" && client.status != "RETIRADO"
-        ? (client.status = await formatStatus(client.prazoFinal))
-        : "";
+      client.status != "CONTRATO_ASSINADO" &&
+        client.status != "RETIRADO" &&
+        (client.status = await formatStatus(client.prazoFinal, client.id));
+
       setClientsByStatus(client);
     }
     clientStore.getState().setClients(clients);
@@ -64,30 +74,43 @@ export async function create(data: FormData) {
     prazoFinal: data.get("prazo"),
     status: await formatStatus(data.get("prazo") as string),
   };
+
   await service.create(client);
   revalidatePath("/");
 }
 
 export async function update(data: any) {
-    const res = await service.update(data);
-    const client = res.data;
-    const prazoFinal = new Date(client.prazoFinal);
-    const dataAtual = new Date().getUTCDate();
-    const dataFinal = prazoFinal.getUTCDate();
-    if (dataFinal > dataAtual) {
-      await updateStatus({ id: client.id, status: "EM_TESTE" });
-    } else if (dataFinal === dataAtual) {
-      await updateStatus({ id: client.id, status: "TESTE_FINALIZADO" });
-    } else if (dataFinal < dataAtual) {
-      await updateStatus({ id: client.id, status: "TESTE_EXPIRADO" });
-    }
-    
-    if (data.contrato)
-      await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
-    if (data.retirado)
-      await updateStatus({ id: client.id, status: "RETIRADO" });
-    revalidatePath("/");
-  
+  const res = await service.update(data);
+  const client = res.data;
+  const prazoFinal = {
+    date: new Date(client.prazoFinal).getUTCDate(),
+    month: new Date(client.prazoFinal).getUTCMonth() + 1,
+  };
+  const dataAtual = {
+    date: new Date().getUTCDate(),
+    month: new Date().getUTCMonth() + 1,
+  };
+
+  if (
+    prazoFinal.date > dataAtual.date &&
+    prazoFinal.month + 1 === dataAtual.month
+  ) {
+    await updateStatus({ id: client.id, status: "EM_TESTE" });
+  } else if (
+    prazoFinal.date > dataAtual.date &&
+    prazoFinal.month + 1 === dataAtual.month
+  ) {
+    await updateStatus({ id: client.id, status: "TESTE_FINALIZADO" });
+  } else if (
+    prazoFinal.date > dataAtual.date &&
+    prazoFinal.month >= dataAtual.month
+  ) {
+    await updateStatus({ id: client.id, status: "TESTE_EXPIRADO" });
+  }
+  if (data.contrato)
+    await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
+  if (data.retirado) await updateStatus({ id: client.id, status: "RETIRADO" });
+  revalidatePath("/");
 }
 
 export async function deleteById(data: any) {
