@@ -10,7 +10,7 @@ const RemoveClient = ({ data }: { data: Projeto.Client }) => {
   };
   return (
     <Dialog>
-      <DialogTrigger className="text-rose-500">
+      <DialogTrigger className="text-rose-800">
         <Trash2Icon size={23} />
       </DialogTrigger>
       <DialogContent className="p-5">

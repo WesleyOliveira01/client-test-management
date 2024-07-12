@@ -18,7 +18,7 @@ const EditClient = ({ client }: { client: Projeto.Client }) => {
   };
   return (
     <Dialog>
-      <DialogTrigger className="text-zinc-400">
+      <DialogTrigger className="text-zinc-200">
         <BoltIcon size={23} />
       </DialogTrigger>
       <DialogContent>

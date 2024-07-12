@@ -3,8 +3,8 @@ import { twMerge } from "tailwind-merge";
 
 type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
   children: ReactNode;
-  label: string;
-  forElement: string;
+  label?: string;
+  forElement?: string;
   label_cn?: string;
   select_cn?: string;
   error_message?: string;

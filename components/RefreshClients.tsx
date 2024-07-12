@@ -1,9 +1,11 @@
+import { clientStore } from "@/store/store";
 import { RefreshCwIcon } from "lucide-react";
 import { revalidatePath } from "next/cache";
 
 const RefreshClients = () => {
   const refresh = async () => {
     "use server";
+    clientStore.getState().setFiltrados([]);
     revalidatePath("/");
   };
   return (
