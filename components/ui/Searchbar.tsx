@@ -24,7 +24,7 @@ const Searchbar = () => {
           name="filter"
           className="w-[90%] p-2 outline-none rounded-l-xl"
           type="text"
-          placeholder="Search..."
+          placeholder="Buscar..."
         />
         <button className="w-[10%] bg-green-400 p-2 text-white font-semibold rounded-r-xl shadow-md">
           Buscar
