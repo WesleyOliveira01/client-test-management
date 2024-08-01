@@ -15,16 +15,20 @@ const formatStatus = async (prazoFinal: string, id?: number) => {
     date: new Date().getUTCDate(),
     month: new Date().getUTCMonth() + 1,
   };
-  if (prazo.date === dataAtual.date && prazo.month === dataAtual.month) {
+  if (prazo.month < dataAtual.month) {
+    return "TESTE_EXPIRADO";
+  }
+
+  if (prazo.date === dataAtual.date) {
     id && (await updateStatus({ id: id, status: "TESTE_FINALIZADO" }));
     return "TESTE_FINALIZADO";
-  } else if (prazo.date < dataAtual.date && prazo.month <= dataAtual.month) {
+  } else if (prazo.date < dataAtual.date) {
     id && (await updateStatus({ id: id, status: "TESTE_EXPIRADO" }));
     return "TESTE_EXPIRADO";
-  } else {
-    id && (await updateStatus({ id: id, status: "EM_TESTE" }));
-    return "EM_TESTE";
   }
+  
+  id && (await updateStatus({ id: id, status: "EM_TESTE" }));
+  return "EM_TESTE";
 };
 
 export async function formataData(data: string) {
@@ -56,7 +60,6 @@ export async function findAll() {
       client.status != "CONTRATO_ASSINADO" &&
         client.status != "RETIRADO" &&
         (client.status = await formatStatus(client.prazoFinal, client.id));
-
       setClientsByStatus(client);
     }
     clientStore.getState().setClients(clients);
@@ -68,6 +71,7 @@ export async function findAll() {
 }
 
 export async function create(data: FormData) {
+  console.log(data);
   const client = {
     id_client: data.get("id_client"),
     name: data.get("name"),
