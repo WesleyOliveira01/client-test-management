@@ -5,5 +5,7 @@ namespace Projeto {
         name: string
         prazoFinal: string
         status: string
+        retirado?: boolean
+        contrato?: boolean
     }
 }
