@@ -1,7 +1,8 @@
-import { update } from "@/actions/MeshActions";
+
 import { BoltIcon } from "lucide-react";
 import Input from "./ui/Input";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
+import { update } from "@/actions/mesh/Update";
 
 const EditClient = ({ client }: { client: Projeto.Client }) => {
   const _update = async (data: FormData) => {

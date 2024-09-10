@@ -1,0 +1,25 @@
+# Ignorar diretórios e arquivos desnecessários
+node_modules
+.git
+.env
+.DS_Store
+
+# Ignorar logs e arquivos temporários
+logs
+*.log
+tmp
+*.tmp
+
+# Ignorar arquivos de configuração locais
+*.local
+*.env.local
+
+# Ignorar arquivos de build
+build
+dist
+
+# Ignorar arquivos de configuração do editor
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace

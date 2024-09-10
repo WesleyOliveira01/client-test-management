@@ -35,9 +35,17 @@ export function formatStatus(status: string) {
   }
 }
 
-
 export const schema = z.object({
-    id_client: z.string({required_error: "Id do client obrigatório"}).min(1, {message: "Id do client obrigatório"}),
-    name: z.string({required_error: "Nome obrigatório"}).min(1, {message: "Nome obrigatório"}),
-    prazo: z.string({required_error: "Prazo obrigatório"}).date(),
-})
+  id_client: z
+    .string({ required_error: "Id do client obrigatório" })
+    .min(1, { message: "Id do client obrigatório" }),
+  name: z
+    .string({ required_error: "Nome obrigatório" })
+    .min(1, { message: "Nome obrigatório" }),
+  prazo: z.string({ required_error: "Prazo obrigatório" }).date(),
+});
+
+export const loginSchema = z.object({
+  login: z.string().min(1, { message: "O nome de usuario é obrigatório" }),
+  password: z.string().min(1, { message: "A senha é obrigatório" }),
+});

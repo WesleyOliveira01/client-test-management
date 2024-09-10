@@ -1,11 +1,11 @@
-import { deleteById } from "@/actions/MeshActions";
+import { deleteById } from "@/actions/mesh/Delete";
 import { Trash2Icon } from "lucide-react";
 import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 
 const RemoveClient = ({ data }: { data: Projeto.Client }) => {
   const removeClient = async () => {
     "use server";
-    console.log("deletou")
+    console.log("deletou");
     await deleteById(data);
   };
   return (
@@ -18,7 +18,12 @@ const RemoveClient = ({ data }: { data: Projeto.Client }) => {
         <section className="flex justify-between">
           <DialogClose className="text-xl font-semibold">Não</DialogClose>
           <form action={removeClient}>
-            <DialogClose type="submit" className="text-rose-500 text-xl font-semibold">Sim</DialogClose>
+            <DialogClose
+              type="submit"
+              className="text-rose-500 text-xl font-semibold"
+            >
+              Sim
+            </DialogClose>
           </form>
         </section>
       </DialogContent>

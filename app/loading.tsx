@@ -1,7 +1,7 @@
+import { LoaderCircle } from "lucide-react";
+
 const Loading = () => {
-    return ( 
-        <div className="text-2xl text-center">Loading...</div>
-     );
+    return <LoaderCircle className="animate-spin" color="#ffffff" size={25} />;
 }
  
 export default Loading;

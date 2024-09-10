@@ -1,7 +1,8 @@
-import { formataData } from "@/actions/MeshActions";
+
 import { formatStatus } from "@/lib/utils";
 import EditClient from "./EditClient";
 import RemoveClient from "./RemoveClient";
+import { formataData } from "@/actions/mesh/lib/meshUtils";
 
 const CardClient = async ({ client }: { client: Projeto.Client }) => {
   const prazo = formataData(client.prazoFinal);
