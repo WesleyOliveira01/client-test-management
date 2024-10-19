@@ -28,7 +28,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <section className={twMerge("flex flex-col gap-2", box_cn)}>
         <label
-          className={twMerge(label_cn, "block text-sky-500 font-semibold")}
+          className={twMerge(label_cn, "block text-lime-500 font-semibold")}
           htmlFor={forElement}
         >
           {label}
@@ -36,7 +36,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         <input
           className={twMerge(
             input_cn,
-            "w-full outline-none bg-zinc-100 focus:bg-zinc-200 p-2 rounded-xl shadow-md"
+            "w-full outline-none bg-zinc-100 focus:bg-zinc-200 p-2 rounded-xl shadow-md dark:text-zinc-500"
           )}
           id={forElement}
           name={forElement}

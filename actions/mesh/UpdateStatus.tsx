@@ -6,5 +6,5 @@ const service = new MeshService();
 
 export async function updateStatus(data: any) {
   await service.updateStaus(data);
-  revalidatePath("/");
+  revalidatePath("/home");
 }

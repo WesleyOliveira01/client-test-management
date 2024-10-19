@@ -6,14 +6,11 @@ import { formatStatus } from "./lib/meshUtils";
 const service = new MeshService();
 
 export async function create(data: FormData) {
-
-  const client = {
+  await service.create({
     id_client: data.get("id_client"),
     name: data.get("name"),
     prazoFinal: data.get("prazo"),
     status: await formatStatus(data.get("prazo") as string),
-  };
-
-  await service.create(client);
-  revalidatePath("/");
+  });
+  revalidatePath("/home");
 }

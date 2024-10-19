@@ -1,6 +1,6 @@
 import { deleteById } from "@/actions/mesh/Delete";
 import { Trash2Icon } from "lucide-react";
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "../ui/dialog";
 
 const RemoveClient = ({ data }: { data: Projeto.Client }) => {
   const removeClient = async () => {

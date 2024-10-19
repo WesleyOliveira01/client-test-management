@@ -1,8 +1,7 @@
-
-import { BoltIcon } from "lucide-react";
-import Input from "./ui/Input";
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
 import { update } from "@/actions/mesh/Update";
+import { Cog } from "lucide-react";
+import Input from "../ui/Input";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "../ui/dialog";
 
 const EditClient = ({ client }: { client: Projeto.Client }) => {
   const _update = async (data: FormData) => {
@@ -19,8 +18,8 @@ const EditClient = ({ client }: { client: Projeto.Client }) => {
   };
   return (
     <Dialog>
-      <DialogTrigger className="text-zinc-200">
-        <BoltIcon size={23} />
+      <DialogTrigger className="text-zinc-900 hover:animate-spin">
+        <Cog size={23} />
       </DialogTrigger>
       <DialogContent>
         <form className="flex flex-col gap-3" action={_update}>
@@ -37,32 +36,32 @@ const EditClient = ({ client }: { client: Projeto.Client }) => {
             label="Prazo"
           />
           <section className="flex justify-evenly">
-              <div className="flex gap-2">
-                <label htmlFor="contrato" className="text-sky-500 font-semibold">
-                  Contrato assinado?
-                </label>
-                <input
-                  type="checkbox"
-                  className="checkbox-lg checkbox-info"
-                  id="contrato"
-                  name="contrato"
-                />
-              </div>
-              <div className="flex gap-2">
-                <label htmlFor="retirado" className="text-sky-500 font-semibold">
-                  Mesh retirado?
-                </label>
-                <input
-                  type="checkbox"
-                  className="checkbox-lg checkbox-info"
-                  id="retirado"
-                  name="retirado"
-                />
-              </div>
+            <div className="flex gap-2">
+              <label htmlFor="contrato" className="text-lime-500 font-semibold">
+                Contrato assinado?
+              </label>
+              <input
+                type="checkbox"
+                className="checkbox-lg checkbox-info"
+                id="contrato"
+                name="contrato"
+              />
+            </div>
+            <div className="flex gap-2">
+              <label htmlFor="retirado" className="text-lime-500 font-semibold">
+                Mesh retirado?
+              </label>
+              <input
+                type="checkbox"
+                className="checkbox-lg checkbox-info"
+                id="retirado"
+                name="retirado"
+              />
+            </div>
           </section>
           <DialogClose
             type="submit"
-            className="w-full bg-sky-400 rounded-xl font-semibold text-zinc-50 hover:bg-sky-500 hover:text-zinc-100 shadow-md p-2"
+            className="w-full bg-lime-500 rounded-xl font-semibold text-zinc-50  shadow-md p-2"
           >
             Salvar
           </DialogClose>

@@ -37,5 +37,5 @@ export async function update(data: any) {
   if (data.contrato)
     await updateStatus({ id: client.id, status: "CONTRATO_ASSINADO" });
   if (data.retirado) await updateStatus({ id: client.id, status: "RETIRADO" });
-  revalidatePath("/");
+  revalidatePath("/home");
 }

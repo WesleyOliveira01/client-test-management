@@ -5,8 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
-import Input from "./ui/Input";
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from "./ui/dialog";
+import Input from "../ui/Input";
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from "../ui/dialog";
 import { create } from "@/actions/mesh/Create";
 
 const AddClient = ({ className }: { className?: string }) => {
@@ -24,7 +24,7 @@ const AddClient = ({ className }: { className?: string }) => {
       <DialogTrigger
         type="submit"
         className={twMerge(
-          "w-full p-2 bg-green-400 rounded-xl font-semibold text-zinc-50 hover:bg-green-500 hover:text-zinc-100 shadow-md",
+          "w-full p-2 bg-lime-500 rounded-l-xl font-semibold text-zinc-50 hover:bg-lime-600 hover:text-zinc-100 shadow-md",
           className
         )}
       >
@@ -66,7 +66,7 @@ const AddClient = ({ className }: { className?: string }) => {
           <DialogClose
             type="submit"
             disabled={!isValid}
-            className="w-full bg-sky-400 rounded-xl font-semibold text-zinc-50 hover:bg-sky-500 hover:text-zinc-100 shadow-md p-2"
+            className="w-full bg-lime-500 rounded-xl font-semibold text-zinc-50 cursor-pointer shadow-md p-2"
           >
             Salvar
           </DialogClose>

@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 const service = new MeshService();
 
 export async function deleteById(data: any) {
-
   await service.delete(data);
-  revalidatePath("/");
+  revalidatePath("/home");
 }

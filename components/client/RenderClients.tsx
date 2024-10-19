@@ -1,6 +1,6 @@
-import ClientCards from "@/components/ClientCard";
+import ClientCards from "@/components/client/ClientCard";
 import { twMerge } from "tailwind-merge";
-import Container from "../Container";
+import Container from "../ui/Container";
 
 interface RenderClientsProps {
   data: any[];
@@ -21,11 +21,11 @@ const RenderClients = ({
         className={twMerge("border-2 border-dotted rounded-xl", box_cn)}
       >
         <h1 className={twMerge("text-xl font-semibold", title_cn)}>{title}</h1>
-        <section className="flex flex-wrap gap-2 p-4 justify-evenly">
+        <ol className="flex flex-row-reverse flex-wrap gap-2 p-4 justify-evenly">
           {data.map((item) => (
             <ClientCards key={item.id} client={item} />
           ))}
-        </section>
+        </ol>
       </Container>
     )
   );

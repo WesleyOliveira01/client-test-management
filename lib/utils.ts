@@ -49,3 +49,12 @@ export const loginSchema = z.object({
   login: z.string().min(1, { message: "O nome de usuario é obrigatório" }),
   password: z.string().min(1, { message: "A senha é obrigatório" }),
 });
+
+export const userSchema = z.object({
+  name: z.string().min(1, { message: "O nome é obrigatório" }),
+  login: z.string().min(1, { message: "O login é obrigatório" }),
+  password: z
+    .string({ required_error: "A senha é obrigatória" })
+    .min(6, { message: "A senha deve ter ao menos 6 digitos" }),
+  role: z.enum(["ADMIN", "USER"]).default("USER"),
+});

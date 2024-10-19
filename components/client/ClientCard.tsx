@@ -1,10 +1,11 @@
-
+import { formataData } from "@/actions/mesh/lib/meshUtils";
 import { formatStatus } from "@/lib/utils";
+import { userStore } from "@/store/store";
 import EditClient from "./EditClient";
 import RemoveClient from "./RemoveClient";
-import { formataData } from "@/actions/mesh/lib/meshUtils";
 
 const CardClient = async ({ client }: { client: Projeto.Client }) => {
+  const { user } = userStore.getState();
   const prazo = formataData(client.prazoFinal);
   let corCard;
   switch (client.status) {
@@ -18,7 +19,7 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
       corCard = "bg-rose-400 text-red-700";
       break;
     case "CONTRATO_ASSINADO":
-      corCard = "bg-green-400 text-green-700";
+      corCard = "bg-lime-500 text-green-700";
       break;
     case "RETIRADO":
       corCard = "bg-sky-400 text-blue-600";
@@ -28,7 +29,7 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
   }
   const status = formatStatus(client.status);
   return (
-    <div
+    <li
       className={`flex justify-between p-4 rounded-xl ${corCard} shadow-md w-[100%] lg:w-[30%]`}
     >
       <section className="p-4">
@@ -47,7 +48,14 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
       </section>
       <section className="flex flex-col  justify-between gap-2 p-2">
         {client.status == "CONTRATO_ASSINADO" ? (
-          <EditClient client={client} />
+          <>
+            {user.role == "ADMIN" && (
+              <>
+                <EditClient client={client} />
+                <RemoveClient data={client} />
+              </>
+            )}
+          </>
         ) : (
           <>
             <EditClient client={client} />
@@ -55,7 +63,7 @@ const CardClient = async ({ client }: { client: Projeto.Client }) => {
           </>
         )}
       </section>
-    </div>
+    </li>
   );
 };
 

@@ -14,6 +14,7 @@ type SelectProps = SelectHTMLAttributes<HTMLSelectElement> & {
 const Select = forwardRef<HTMLSelectElement, SelectProps>(
   (
     {
+      label,
       children,
       forElement,
       label_cn,
@@ -25,11 +26,13 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
     ref
   ) => {
     return (
-      <>
-        <label className={twMerge("", label_cn)} htmlFor={forElement}></label>
+      <section className="flex flex-col gap-2">
+        <label className={twMerge("text-lime-500 font-semibold", label_cn)} htmlFor={forElement}>
+          {label}
+        </label>
         <select
           className={twMerge(
-            "p-3 w-full outline-none bg-zinc-100 focus:bg-zinc-200 rounded-xl shadow-md",
+            "p-2 w-full outline-none bg-zinc-100 focus:bg-zinc-200 text-zinc-950 font-semibold rounded-xl shadow-md",
             select_cn
           )}
           onChange={onChange}
@@ -41,7 +44,7 @@ const Select = forwardRef<HTMLSelectElement, SelectProps>(
           {children}
         </select>
         <p className="text-rose-500">{error_message}</p>
-      </>
+      </section>
     );
   }
 );

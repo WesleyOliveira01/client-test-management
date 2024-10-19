@@ -6,6 +6,7 @@ export const formatStatus = async (prazoFinal: string, id?: number) => {
     date: new Date(prazoFinal).getUTCDate(),
     month: new Date(prazoFinal).getUTCMonth() + 1,
   };
+
   const dataAtual = {
     date: new Date().getUTCDate(),
     month: new Date().getUTCMonth() + 1,
@@ -27,22 +28,24 @@ export const formatStatus = async (prazoFinal: string, id?: number) => {
 };
 
 export async function formataData(data: string) {
-  var d = new Date(data),
-    dia = "" + d.getUTCDate(),
-    mes = "" + (d.getUTCMonth() + 1),
-    ano = d.getFullYear();
-  if (dia.length < 2) dia = "0" + dia;
-  if (mes.length < 2) mes = "0" + mes;
-  return [dia, mes, ano].join("/");
+  return new Date(data)
+    .toISOString()
+    .split("T")[0]
+    .split("-")
+    .reverse()
+    .join("/");
 }
 
 export function setClientsByStatus(item: Projeto.Client) {
-  if (item.status == "EM_TESTE") clientStore.getState().addClientEmTeste(item);
-  if (item.status == "TESTE_FINALIZADO")
-    clientStore.getState().addClientTesteFinalizado(item);
-  if (item.status == "TESTE_EXPIRADO")
-    clientStore.getState().addClientTesteExpirado(item);
-  if (item.status == "CONTRATO_ASSINADO")
-    clientStore.getState().addClientContratoAssinado(item);
-  if (item.status == "RETIRADO") clientStore.getState().addClientRetirado(item);
+  const statusActions: { [key: string]: (item: Projeto.Client) => void } = {
+    EM_TESTE: clientStore.getState().addClientEmTeste,
+    TESTE_FINALIZADO: clientStore.getState().addClientTesteFinalizado,
+    TESTE_EXPIRADO: clientStore.getState().addClientTesteExpirado,
+    CONTRATO_ASSINADO: clientStore.getState().addClientContratoAssinado,
+    RETIRADO: clientStore.getState().addClientRetirado,
+  };
+  const action = statusActions[item.status];
+  if (action) {
+    action(item);
+  }
 }

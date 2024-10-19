@@ -1,32 +1,19 @@
-import { clientStore } from "@/store/store";
-import { revalidatePath } from "next/cache";
+import { filteredClients } from "@/actions/mesh/FilterClients";
+import AddClient from "../client/AddClient";
+
 
 const Searchbar = () => {
-  const filteredClients = async (data: FormData) => {
-    "use server";
-    clientStore.getState().setFiltrados([]);
-    if (!data.get("filter")) return;
-    const clients = clientStore.getState().client;
-    const filter = data.get("filter");
-    const results = clients?.filter((client) =>
-      client.name.toLowerCase().includes(filter as string)
-    );
-    clientStore.getState().setFiltrados(results);
-    revalidatePath("/");
-  };
   return (
-    <div className="w-[95%]">
-      <form
-        action={filteredClients}
-        className="shadow-md border-gray-400 rounded-xl flex"
-      >
+    <div className="w-full flex shadow-md">
+      <AddClient className="w-[10%] bg-lime-500" />
+      <form action={filteredClients} className="w-full flex">
         <input
           name="filter"
-          className="w-[90%] p-2 outline-none rounded-l-xl"
+          className="w-full dark:bg-zinc-100 placeholder:text-zinc-900 dark:text-zinc-900 p-2 outline-none"
           type="text"
           placeholder="Buscar..."
         />
-        <button className="w-[10%] bg-green-400 p-2 text-white font-semibold rounded-r-xl shadow-md">
+        <button className="w-[10%] bg-lime-500 p-2 text-white font-semibold rounded-r-xl shadow-md">
           Buscar
         </button>
       </form>
