@@ -1,7 +1,7 @@
 import { getUserDetails } from "@/actions/user/GetUserDetails";
 import { logOut } from "@/actions/user/LogOut";
 import { userStore } from "@/store/store";
-import { BrainCircuit, Database, FolderCog, LogOut, Menu, UserCog } from "lucide-react";
+import { BrainCircuit, FolderCog, LogOut, Menu, UserCog } from "lucide-react";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -14,7 +14,6 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
 
@@ -36,10 +35,6 @@ const MenuBar = async () => {
                   <h2 className="cursor-pointer">Olá {user.name}</h2>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                  <DropdownMenuItem className="flex gap-1">
-                    <UserCog size={20} />
-                    <Link href={`/users/${user.id}`}>ver perfil</Link>
-                  </DropdownMenuItem>
                   <DropdownMenuItem>
                     <form action={logOut}>
                       <button

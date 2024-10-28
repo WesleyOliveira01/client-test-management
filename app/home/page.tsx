@@ -4,11 +4,8 @@ import RenderClients from "@/components/client/RenderClients";
 import Container from "@/components/ui/Container";
 import Searchbar from "@/components/ui/Searchbar";
 import { clientStore } from "@/store/store";
-import { revalidatePath } from "next/cache";
 
 const Home = async () => {
-  revalidatePath("/home");
-  clientStore.getState().resetClients();
   await findAll();
   const {
     emTeste,

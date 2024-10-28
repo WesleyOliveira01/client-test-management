@@ -7,6 +7,7 @@ import { formatStatus, setClientsByStatus } from "./lib/meshUtils";
 const service = new MeshService();
 
 export async function findAll() {
+  clientStore.getState().resetClients();
   try {
     const { data } = await service.findAll();
     for (const client of data) {
